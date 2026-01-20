@@ -12,6 +12,8 @@ import HelpSupport from "./pages/HelpSupport/HelpSupport";
 import Payments from "./pages/Payments/Payments";
 import History from "./pages/history/History";
 import MapView from "./shared/MapView";
+import NotFound from "./shared/ui/NotFound";
+import EmptyState from "./shared/ui/EmptyState";
 function AppContents() {
   return (
     <Routes>
@@ -28,7 +30,9 @@ function AppContents() {
           <Route path="/payments" element={<Payments />} />
           <Route path="/history" element={<History />} />
           <Route path="/map-view" element={<MapView />} />
-          <Route path="*" element={<div>404 Not Found</div>} />
+          <Route path="/empty-state" element={<EmptyState />} />
+           {/* WRONG ROUTE (404) */}
+          <Route path="*" element={<NotFound />} />
       </Route>
 
       {/* No AppShell */}

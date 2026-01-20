@@ -10,9 +10,9 @@ export default function Header({ variant, title, onMenuClick }: HeaderProps) {
     return null;
   }
   return (
-    <header className="app-header px-4 py-2 border-b bg-white">
+    <header className="app-header  border-b bg-white">
       {variant === "main" && <MainHeader title={title} onMenuClick={onMenuClick} />}
       {variant === "back" && title && <BackHeader title={title} />}
     </header>
   );
-}
+} 

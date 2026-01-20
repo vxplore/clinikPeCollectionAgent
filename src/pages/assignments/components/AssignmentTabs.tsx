@@ -91,7 +91,7 @@ const AssignmentTabs = () => {
           className="
     fixed bottom-20 right-6
     w-14 h-14 rounded-full
-    bg-blue-600 text-white
+    bg-primary text-white
     flex items-center justify-center
     shadow-lg
     transition

@@ -6,7 +6,7 @@ const MainHeader = ({ title, onMenuClick }: { title: string | undefined; onMenuC
   return (
     <div>
       {/* Left: Menu + Greeting */}
-      <div className="flex justify-start items-center gap-3">
+      <div className="flex justify-start items-center gap-3 px-4 py-2">
         <Button variant="subtle" onClick={onMenuClick} className="p-0">
           <img className="p-3" src={threeline} alt="Menu" />
         </Button>
