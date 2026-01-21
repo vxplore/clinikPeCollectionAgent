@@ -1,6 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { LayoutDashboard, ClipboardList, User, Settings } from "lucide-react";
 import clsx from "clsx";
+import { useAuthStore } from "../../stores/auth.store";
 
 const tabs = [
   { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -10,6 +11,8 @@ const tabs = [
 ];
 
 export default function BottomNav() {
+  const profileImage = useAuthStore((s) => s.user?.profile_image);
+
   return (
     <nav className="app-bottom-nav safe-bottom border-t bg-white">
       <ul className="flex">
@@ -20,11 +23,22 @@ export default function BottomNav() {
               className={({ isActive }) =>
                 clsx(
                   "flex flex-col items-center gap-1 py-2 text-xs transition-colors",
-                  isActive ? "text-[#0D52AF]" : "text-gray-400"
+                  isActive ? "text-[#0D52AF]" : "text-gray-400",
                 )
               }
             >
-              <Icon size={20} />
+              {to === "/profile" ? (
+                <img
+                  src={
+                    profileImage ??
+                    "https://multilangbridge.in/uploads/website-images/frontend-avatar.png"
+                  }
+                  alt="profile"
+                  className="w-6 h-6 rounded-full object-cover" 
+                />
+              ) : (
+                <Icon size={20} />
+              )}
               <span>{label}</span>
             </NavLink>
           </li>

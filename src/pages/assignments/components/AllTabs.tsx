@@ -3,7 +3,8 @@ import SampleTab from "./SampleTab/SampleTab";
 import TestTab from "./TestTab/TestTab";
 import PaymentTab from "./PaymentTab/PaymentTab";
 import ActivitesTab, { type Activity } from "./ActivitiesTab/ActivitesTab";
-
+import { useAssignmentSample, useAssignmentTests } from "../hooks/useTabData";
+import { useParams } from "react-router-dom";
 interface AllTabsProps {
   activeTab: string | null;
   setActiveTab: (tab: string | null) => void;
@@ -17,6 +18,20 @@ const AllTabs = ({
   activities,
   handleMarkCollected,
 }: AllTabsProps) => {
+  const { id } = useParams<{ id: string }>();
+  console.log("Assignment ID in AllTabs:", id);
+
+  const { samples, isLoading, error } = useAssignmentSample(id!);
+  const {
+    tests,
+    pagination,
+    isLoading: testsLoading,
+    error: testsError,
+  } = useAssignmentTests(id!, 1, 100, activeTab === "Tests");
+
+  console.log("Samples data in AllTabs:", samples);
+  console.log("Tests data in AllTabs:", tests);
+
   return (
     <Tabs
       value={activeTab}
@@ -40,11 +55,21 @@ const AllTabs = ({
       </Tabs.List>
 
       <Tabs.Panel value="Sample" className="pt-2">
-        <SampleTab handleMarkCollected={handleMarkCollected} />
+        <SampleTab
+          samples={samples}
+          isLoading={isLoading}
+          error={error}
+          handleMarkCollected={handleMarkCollected}
+        />
       </Tabs.Panel>
 
       <Tabs.Panel value="Tests" className="pt-2">
-        <TestTab />
+        <TestTab
+          tests={tests}
+          pagination={pagination}
+          isLoading={testsLoading}
+          error={testsError}
+        />
       </Tabs.Panel>
 
       <Tabs.Panel value="Payments" className="pt-2">

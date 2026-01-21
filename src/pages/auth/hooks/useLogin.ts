@@ -4,6 +4,7 @@ import { loginApi } from "../../../apis/modules/auth/auth.api";
 import type { ApiError } from "../../../apis/client/ApiError";
 import { notify } from "../../../app/notifications";
 import { useNavigate } from "react-router-dom";
+import { useAuthStore } from "../../../stores/auth.store";
 
 export function useLogin() {
     const navigate = useNavigate();
@@ -11,6 +12,11 @@ export function useLogin() {
         mutationFn: loginApi,
         onSuccess: (data) => {
             notify.success(data.message ?? "Login successful");
+            useAuthStore.getState().setUser({
+                id: data.data.user_id,
+                name: "",
+                profile_image: data.data.profile_image,
+            });
             navigate("/dashboard", { replace: true });
         },
         onError: (error: ApiError) => {

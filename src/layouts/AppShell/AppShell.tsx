@@ -9,16 +9,25 @@ import { useState } from "react";
 import LogoutConfirmModal from "./LogoutConfirmModal";
 import { useLogout } from "../../pages/auth/hooks/useLogout";
 export default function AppShell() {
+
+
+
   const { logout, isLoading } = useLogout();
+
   const location = useLocation();
+
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
   const meta = Object.entries(routeMeta).find(([path]) =>
     matchPath(path, location.pathname),
   )?.[1] ?? {
     header: "back",
     showBottomNav: true,
   };
+
   console.log("Route Meta:", meta);
+
+  
   const [logoutOpen, setLogoutOpen] = useState(false);
 
   const handleLogoutClick = () => {

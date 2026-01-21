@@ -1,36 +1,122 @@
 import { useState, useRef, useEffect } from "react";
 import { ChevronDown } from "lucide-react";
 import whitemapicon from "../../.././assets/whitemap.svg";
-interface DetailItem {
-  label: string;
-  value: string | number;
-  color?: string;
-}
-
-interface Section {
-  title: string;
-  items: DetailItem[];
-  hasLocation?: boolean;
-}
+import type { AssignmentDetailData } from "../../../apis/modules/assignment/assignment.types";
+import ExpandableDetailsSkeleton from "./ExpandableDetailsSkeleton";
 
 interface ExpandableDetailsProps {
-  title: string;
-  sections: Section[];
+  data: AssignmentDetailData | undefined;
+  isLoading: boolean;
+  isError: boolean;
+  error: string | null;
+  title?: string;
   defaultOpen?: boolean;
-  onLocationClick?: () => void;
+  onLocationClick?: (location: {
+    lat?: number;
+    lng?: number;
+    address?: string;
+  }) => void;
 }
 
 function ExpandableDetails({
-  title,
-  sections,
-  defaultOpen = true,
+  data,
+  isLoading,
+  isError,
+  error,
+  title = "Details",
+  defaultOpen = false,
   onLocationClick,
 }: ExpandableDetailsProps) {
   const [open, setOpen] = useState(defaultOpen);
   const [height, setHeight] = useState<number | undefined>(
-    defaultOpen ? undefined : 0
+    defaultOpen ? undefined : 0,
   );
   const contentRef = useRef<HTMLDivElement>(null);
+
+  // special sections derived from data
+  const sections = data
+    ? [
+        {
+          title: "PATIENT DETAILS",
+          hasLocation: false,
+          items: [
+            {
+              label: "Name",
+              value: data.assignment.for_patient?.name || "N/A",
+              color: undefined,
+            },
+            {
+              label: "Age",
+              value: data.assignment.for_patient?.age || "N/A",
+              color: undefined,
+            },
+            {
+              label: "Gender",
+              value: data.assignment.for_patient?.gender || "N/A",
+              color: undefined,
+            },
+          ],
+        },
+        {
+          title: "LOCATION",
+          hasLocation: true,
+          items: [
+            {
+              label: "",
+              value: data.assignment.location?.address || "N/A",
+              color: undefined,
+            },
+            {
+              label: "",
+              value: `Pincode: ${data.assignment.location?.pincode || "N/A"}`,
+              color: undefined,
+            },
+          ],
+        },
+        {
+          title: "BOOKING DETAILS",
+          hasLocation: false,
+          items: [
+            {
+              label: "Booking ID",
+              value: data.assignment.booking?.id || "N/A",
+              color: undefined,
+            },
+            {
+              label: "Booking Date",
+              value: data.assignment.booking?.date || "N/A",
+              color: undefined,
+            },
+          ],
+        },
+        {
+          title: "PAYMENT SUMMARY",
+          hasLocation: false,
+          items: [
+            {
+              label: "Total Amount",
+              value: `₹${data.assignment.payment_summary?.total_amount || "0"}`,
+              color: undefined,
+            },
+            {
+              label: "Discount",
+              value: `₹${data.assignment.payment_summary?.discount_amount || "0"}`,
+              color: "green",
+            },
+            {
+              label: "Paid Amount",
+              value: `₹${data.assignment.payment_summary?.paid_amount || "0"}`,
+              color: "green",
+            },
+            {
+              label: "Payable Amount",
+              value: `₹${data.assignment.payment_summary?.payable_amount || "0"}`,
+              color: undefined,
+            },
+          ],
+        },
+      ]
+    : [];
 
   useEffect(() => {
     if (contentRef.current) {
@@ -54,6 +140,24 @@ function ExpandableDetails({
       setHeight(undefined);
     }
   };
+
+  // Show skeleton if loading
+  if (isLoading) {
+    return <ExpandableDetailsSkeleton />;
+  }
+
+  // Show error if error occurred
+  if (isError) {
+    return (
+      <h2 className="text-red-500">
+        {error || "An error occurred while loading details"}
+      </h2>
+    );
+  }
+
+  if (!data) {
+    return null;
+  }
 
   return (
     <div className="bg-white rounded-lg">
@@ -104,7 +208,13 @@ function ExpandableDetails({
                     ))}
                   </div>
                   <div
-                    onClick={onLocationClick}
+                    onClick={() =>
+                      onLocationClick?.({
+                        lat: data.assignment.location?.lat,
+                        lng: data.assignment.location?.lng,
+                        address: data.assignment.location?.address,
+                      })
+                    }
                     className="px-4 py-3 rounded-lg bg-primary hover:bg-primary-dark transition-colors flex-shrink-0 cursor-pointer"
                     aria-label="View location"
                   >
@@ -122,14 +232,16 @@ function ExpandableDetails({
                       key={idx}
                       className="flex justify-between items-center"
                     >
-                      <span className="text-gray-500">{item.label}</span>
+                      {item.label && (
+                        <span className="text-gray-500">{item.label}</span>
+                      )}
                       <span
                         className={`font-semibold ${
                           item.color === "green"
                             ? "text-green-600"
                             : item.color === "red"
-                            ? "text-red-600"
-                            : "text-gray-900"
+                              ? "text-red-600"
+                              : "text-gray-900"
                         }`}
                       >
                         {item.value}

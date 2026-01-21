@@ -1,12 +1,17 @@
-// import React from 'react'
 import { useState } from "react";
 import FilterChips from "./components/FilterChips";
 import { AssignmentPageCard } from "./components/AssignmentPageCard";
 import SecondaryHeader from "../../layouts/AppShell/SecondaryHeader";
 import { useAssignments } from "./hooks/useAssignment";
+import { useAssignmentFilters } from "./hooks/useAssignmentFilters";
 const AssignmentPage = () => {
   const [activeTab, setActiveTab] = useState("today");
-  const { assignments, isLoading, error } = useAssignments({ limit: 3 });
+  const { assignments, isLoading, error } = useAssignments({ day: activeTab });
+  const {
+    filters,
+    isLoading: filtersLoading,
+    error: filtersError,
+  } = useAssignmentFilters();
   console.log("Assignments:", assignments);
 
   const categoryFilters = [
@@ -16,36 +21,7 @@ const AssignmentPage = () => {
     { label: "Old", value: "old" },
     { label: "new", value: "new" },
   ];
-
-  // const assignments = [
   console.log("Assignments data:", error);
-  //   {
-  //     id: "1",
-  //     name: "Ayan paul",
-  //     age: 32,
-  //     gender: "Male",
-  //     address: "123 Oak Street, Downtown",
-  //     latitude: "40.7128",
-  //     longitude: "-74.0060",
-  //     collectedCount: 2,
-  //     totalCount: 3,
-  //     testsCount: 3,
-  //     samples: ["Blood", "Urine", "Saliva"],
-  //   },
-  //   {
-  //     id: "2",
-  //     name: "Ayan paul",
-  //     age: 32,
-  //     gender: "Male",
-  //     address: "123 Oak Street, Downtown",
-  //     latitude: "40.7128",
-  //     longitude: "-74.0060",
-  //     collectedCount: 2,
-  //     totalCount: 3,
-  //     testsCount: 3,
-  //     samples: ["Blood", "Urine", "Saliva"],
-  //   },
-  // ];
 
   const handleCategoryChange = (value: string) => setActiveTab(value);
 
@@ -55,7 +31,9 @@ const AssignmentPage = () => {
         <SecondaryHeader>
           <h2 className="text-lg font-semibold text-gray-900">
             <FilterChips
-              filters={categoryFilters}
+              isLoading={filtersLoading}
+              isError={!!filtersError}
+              filters={filters ? categoryFilters : []}
               activeTab={activeTab}
               onCategoryChange={handleCategoryChange}
             />
@@ -72,6 +50,7 @@ const AssignmentPage = () => {
               loading
               id=""
               name=""
+              gender={null}
               age={null}
               address=""
               latitude={0}
@@ -82,10 +61,11 @@ const AssignmentPage = () => {
               samples={[]}
             />
             <AssignmentPageCard
+              age={0}
               loading
               id=""
               name=""
-              age={null}
+              gender={null}
               address=""
               latitude={0}
               longitude={0}
@@ -111,6 +91,7 @@ const AssignmentPage = () => {
         ) : assignments && assignments.length > 0 ? (
           assignments.map((assignment) => (
             <AssignmentPageCard
+              gender={assignment.for_patient.gender}
               key={assignment.id}
               id={assignment.id}
               name={assignment.for_patient.name}

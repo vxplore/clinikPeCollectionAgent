@@ -12,7 +12,7 @@ const DashboardPage = () => {
     assignments,
     isLoading: assignmentsLoading,
     error: assignmentsError,
-  } = useAssignments( { limit: 3 } );
+  } = useAssignments( { pageSize: 3 , pageNumber: 1 } );
   console.log("Assignments:", assignments);
   if (error)
     return <div className="p-4 text-red-600">Error: {error.message}</div>;

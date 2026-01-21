@@ -2,11 +2,13 @@ import { useNavigate } from "react-router-dom";
 import Badge from "../../../shared/ui/Badge";
 import map from "../../../assets/map.svg";
 import { AssignmentPageCardSkeleton } from "./AssignmentPageCardSkeleton";
+import { getSafeLatLng } from "../../../shared/helpers/mapHelpers";
 
 interface AssignmentPageCardProps {
   loading?: boolean;
   error?: Error | null;
   id: string;
+  gender?: string | null;
   name: string;
   age: number | null;
   address: string;
@@ -23,6 +25,7 @@ export function AssignmentPageCard({
   id,
   name,
   age,
+  gender,
   address,
   latitude,
   longitude,
@@ -33,6 +36,26 @@ export function AssignmentPageCard({
 }: AssignmentPageCardProps) {
   const navigate = useNavigate();
   const handleClick = () => navigate(`/assignments/${id}`);
+  const handleMapClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+
+    // Validate coordinates before navigation
+    const position = getSafeLatLng({ lat: latitude, lng: longitude });
+
+    if (!position) {
+      console.warn("Invalid location coordinates");
+      return;
+    }
+
+    navigate(`/map-view`, {
+      state: {
+        location: {
+          lat: position.lat,
+          lng: position.lng,
+        },
+      },
+    });
+  };
 
   if (loading) {
     return <AssignmentPageCardSkeleton />;
@@ -50,7 +73,10 @@ export function AssignmentPageCard({
       <div className="flex items-start justify-between">
         <div>
           <p className="text-base font-semibold text-gray-900">{name}</p>
-          <p className="text-sm text-gray-500">{age} years</p>
+          <div className="flex gap-1">
+            <p className="text-sm  text-gray-500">{age} years</p>-
+            <p className="text-sm text-gray-500">{gender}</p>
+          </div>
         </div>
 
         <Badge color="green" size="xs">
@@ -64,12 +90,12 @@ export function AssignmentPageCard({
 
         <div className="flex-1">
           <p className="text-sm text-gray-700">{address}</p>
-          <p className="text-xs text-gray-400">
+          {/* <p className="text-xs text-gray-400">
             {latitude}, {longitude}
-          </p>
+          </p> */}
         </div>
 
-        <button className="rounded-lg bg-blue-50 p-4">
+        <button onClick={handleMapClick} className="rounded-lg bg-blue-50 p-4">
           <img src={map} alt="Map" className="h-4 w-4" />
         </button>
       </div>
