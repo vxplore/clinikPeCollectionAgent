@@ -8,7 +8,7 @@ import Sidebar from "./Sidebar";
 import { useState } from "react";
 import LogoutConfirmModal from "./LogoutConfirmModal";
 import { useLogout } from "../../pages/auth/hooks/useLogout";
-import FloatingCartOverlay from "../../pages/Test/components/FloatingCartOverlay";
+import { FloatingCartOverlay } from "../../pages/Test/components/FloatingCartOverlay";
 export default function AppShell() {
 
 
@@ -55,7 +55,7 @@ export default function AppShell() {
         onClose={() => setSidebarOpen(false)}
         onLogoutClick={handleLogoutClick}
       />
-      <LogoutConfirmModal
+      <LogoutConfirmModal 
         isLoading={isLoading}
         opened={logoutOpen}
         onClose={() => setLogoutOpen(false)}

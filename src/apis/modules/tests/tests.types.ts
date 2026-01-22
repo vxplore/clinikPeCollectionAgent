@@ -29,3 +29,19 @@ export interface MoreTest {
     discount_percentage: string;
     is_exist_in_booking: boolean;
 }
+
+
+
+
+export interface AddTestPayload {
+    items: {
+        item_id: string;
+        type: string;
+        sub_type: string;
+    }[]
+
+}
+
+
+
+

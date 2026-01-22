@@ -14,28 +14,38 @@ import History from "./pages/history/History";
 import MapView from "./shared/MapView";
 import NotFound from "./shared/ui/NotFound";
 import EmptyState from "./shared/ui/EmptyState";
+import { useAuthBootstrap } from "./app/useAuthBootstrap";
+import { PrivateRoute, PublicRoute } from "./app/guards";
+
 function AppContents() {
+  useAuthBootstrap();
   return (
     <Routes>
       <Route path="/" element={<SplashPage />} />
-      <Route path="/login" element={<LoginPage />} />
-      <Route element={<AppShell />}>
-        <Route path="/dashboard" element={<DashboardPage />} />
-        <Route path="/assignments" element={<AssignmentPage />} />
-        <Route path="/assignments/:id" element={<AssignmentPageDetails />} />
-        <Route path="/assignments/:id/add-test" element={<AddTest />} />
-         <Route path="/profile" element={<Profile />} />
-         <Route path="/settings" element={<Settings />} />
-         <Route path="/help-support" element={<HelpSupport />} /> 
+      {/* Public Routes */}
+      <Route element={<PublicRoute />}>
+        <Route path="/login" element={<LoginPage />} />
+      </Route>
+
+      {/* Private/Protected Routes */}
+      <Route element={<PrivateRoute />}>
+        <Route element={<AppShell />}>
+          <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/assignments" element={<AssignmentPage />} />
+          <Route path="/assignments/:id" element={<AssignmentPageDetails />} />
+          <Route path="/assignments/:id/add-test" element={<AddTest />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/settings" element={<Settings />} />
+          <Route path="/help-support" element={<HelpSupport />} />
           <Route path="/payments" element={<Payments />} />
           <Route path="/history" element={<History />} />
           <Route path="/map-view" element={<MapView />} />
           <Route path="/empty-state" element={<EmptyState />} />
-           {/* WRONG ROUTE (404) */}
-          <Route path="*" element={<NotFound />} />
+        </Route>
       </Route>
 
-      {/* No AppShell */}
+      {/* 404 Fallback */}
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 }

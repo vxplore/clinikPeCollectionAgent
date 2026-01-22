@@ -9,24 +9,34 @@ interface AuthUser {
 
 interface AuthState {
   user: AuthUser | null;
+  status: "loading" | "authenticated" | "unauthenticated";
 
-  setUser: (user: AuthUser) => void;
-  clearUser: () => void;
+  setAuth: (user: AuthUser) => void;
+  setUnauth: () => void;
+  logout: () => void;
 }
 
 export const useAuthStore = create<AuthState>()(
   persist(
     (set) => ({
       user: null,
+      status: "loading",
 
-      setUser: (user) => set({ user }),
+      setAuth: (user) => set({ user, status: "authenticated" }),
 
-      clearUser: () => set({ user: null }),
+      setUnauth: () => set({ user: null, status: "unauthenticated" }),
+
+      logout: () => {
+        // Clear Zustand state
+        set({ user: null, status: "unauthenticated" });
+        // Clear localStorage (auth-ui key)
+        localStorage.removeItem("auth-ui");
+      },
     }),
     {
-      name: "auth-ui", // UI cache only
+      name: "auth-ui",
       partialize: (state) => ({
-        user: state.user, // ONLY persist user UI
+        user: state.user,
       }),
     }
   )

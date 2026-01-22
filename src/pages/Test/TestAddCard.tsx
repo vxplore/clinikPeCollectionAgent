@@ -1,5 +1,5 @@
 import React from "react";
-import { Plus } from "lucide-react";
+import { Plus, Minus } from "lucide-react";
 import { Button } from "@mantine/core";
 
 interface TestAddCardProps {
@@ -74,10 +74,14 @@ const TestAddCard: React.FC<TestAddCardProps> = ({
           onClick={onAdd}
           px={16}
           py={4}
-          leftSection={<Plus size={20} />}
+          leftSection={isInCart ? <Minus size={20} /> : <Plus size={20} />}
           disabled={is_exist_in_booking}
-          variant={isInCart ? "filled" : "filled"}
+          variant="filled"
           color={isInCart ? "#FF2E2E" : "#0D52AF"}
+          style={{
+            transition: "transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1)",
+            minWidth: "110px",
+          }}
         >
           {isInCart ? "Remove" : "Add"}
         </Button>

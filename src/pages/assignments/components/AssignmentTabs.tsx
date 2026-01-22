@@ -1,9 +1,6 @@
-// import React from 'react'
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Plus } from "lucide-react";
-import { Modal } from "@mantine/core";
 import PaymentModal from "./PaymentModal";
 import AllTabs from "./AllTabs";
 import { notify } from "../../../app/notifications";
@@ -16,16 +13,13 @@ const AssignmentTabs = () => {
   // UI Store
   const showLoader = useUIStore((s) => s.showLoader);
   const hideLoader = useUIStore((s) => s.hideLoader);
-  // const setError = useUIStore((s) => s.setError);
 
   const handleMarkCollected = async () => {
-    // setError("Marking samples as collected...");
     showLoader();
     setTimeout(() => {
       hideLoader();
       notify.success("Samples marked as collected successfully!");
     }, 1000);
-    // 5 seconds
   };
 
   const handleAddClick = () => {
@@ -67,15 +61,9 @@ const AssignmentTabs = () => {
         </button>
       )}
 
-      <Modal
-        opened={paymentModalOpen}
-        onClose={() => setPaymentModalOpen(false)}
-        title={<span className="text-lg font-semibold">New Payment</span>}
-        size="md"
-        centered
-      >
+      {paymentModalOpen && (
         <PaymentModal onClose={() => setPaymentModalOpen(false)} />
-      </Modal>
+      )}
     </div>
   );
 };

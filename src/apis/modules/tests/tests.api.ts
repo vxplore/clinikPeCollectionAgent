@@ -1,5 +1,5 @@
 import { apiRequest } from "../../client/ApiAgents";
-import type { MoreTestsData } from "./tests.types";
+import type { AddTestPayload, MoreTestsData } from "./tests.types";
 
 export function getOtherTests(id: string, pageSize: number, pageNumber: number, search: string) {
     return apiRequest<MoreTestsData>({
@@ -11,5 +11,14 @@ export function getOtherTests(id: string, pageSize: number, pageNumber: number, 
             search,
         },
     });
+}
+
+export function addOtherTest(id: string, payload: AddTestPayload) {
+    return apiRequest({
+        url: `assignments/${id}/tests`,
+        method: "post",
+        data: payload,
+    });
+
 }
 

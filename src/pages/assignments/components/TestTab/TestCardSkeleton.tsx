@@ -2,7 +2,7 @@ function TestCardSkeleton() {
   return (
     <div className="w-full rounded-xl border border-gray-200 bg-white p-4 animate-pulse">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center gap-1 justify-between">
         <div className="flex-1">
           <div className="h-4 w-48 bg-gray-300 rounded" />
         </div>

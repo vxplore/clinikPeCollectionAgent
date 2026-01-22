@@ -12,7 +12,7 @@ export function useLogin() {
         mutationFn: loginApi,
         onSuccess: (data) => {
             notify.success(data.message ?? "Login successful");
-            useAuthStore.getState().setUser({
+            useAuthStore.getState().setAuth({
                 id: data.data.user_id,
                 name: "",
                 profile_image: data.data.profile_image,
