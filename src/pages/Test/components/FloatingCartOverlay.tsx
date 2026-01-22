@@ -1,5 +1,6 @@
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { ChevronUp } from "lucide-react";
 
 interface FloatingCartOverlayProps {
   itemCount: number;
@@ -84,7 +85,8 @@ export const FloatingCartOverlay: React.FC<FloatingCartOverlayProps> = ({
             {itemCount}
           </motion.div>
 
-          <div style={{ fontWeight: 600 }}>View Cart · ₹{totalAmount}</div>
+          <div style={{ fontWeight: 600 }}> ₹{totalAmount}</div>
+          <ChevronUp size={20} style={{ marginLeft: "auto" }} />
         </motion.div>
       )}
     </AnimatePresence>
