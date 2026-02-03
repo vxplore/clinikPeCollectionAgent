@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { IndianRupee, HandFist, FolderClock, LogOut } from "lucide-react";
+import { Home, ClipboardList, User, LogOut } from "lucide-react";
 import logo from "../../assets/clinikpe.svg";
 
 interface SidebarContentProps {
@@ -18,15 +18,11 @@ const SidebarContent: React.FC<SidebarContentProps> = ({
     // { label: "Dashboard", path: "/dashboard", icon: Home },
     // { label: "Assignments", path: "/assignments", icon: ClipboardList },
     // { label: "Profile", path: "/profile", icon: User },
-    { label: "Payments", path: "/payments", icon: IndianRupee },
-    { label: "History", path: "/history", icon: FolderClock },
+    { label: "Dashboard", path: "/dashboard", icon: Home },
+    { label: "Assignments", path: "/assignments", icon: ClipboardList },
     // --- additional realistic items ---
-    { label: "Help / Support", path: "/help-support", icon: HandFist },
+    { label: "Profile", path: "/profile", icon: User },
     // { label: "Settings", path: "/settings", icon: Settings },
-    { label: "Map View", path: "/map-view", icon: HandFist },
-    { label: "Empty State", path: "/empty-state", icon: FolderClock },
-    { label: "Not Found", path: "/not-found", icon: HandFist },
-
   ];
 
   return (

@@ -4,7 +4,7 @@ export interface RouteMeta {
   title?: string;
   showBottomNav?: boolean;
 }
-export const routeMeta: Record<string,RouteMeta> = {
+export const routeMeta: Record<string, RouteMeta> = {
   "/": {
     header: "none",
     showBottomNav: false,
@@ -67,5 +67,10 @@ export const routeMeta: Record<string,RouteMeta> = {
     header: "back",
     title: "Map View",
     showBottomNav: false,
+  },
+  "/notifications": {
+    header: "back",
+    title: "Notifications",
+    showBottomNav: true,
   },
 };

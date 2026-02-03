@@ -66,11 +66,11 @@ function ExpandableDetails({
               value: data.assignment.location?.address || "N/A",
               color: undefined,
             },
-            {
-              label: "",
-              value: `Pincode: ${data.assignment.location?.pincode || "N/A"}`,
-              color: undefined,
-            },
+            // {
+            //   label: "",
+            //   value: `Pincode: ${data.assignment.location?.pincode || "N/A"}`,
+            //   color: undefined,
+            // },
           ],
         },
         {

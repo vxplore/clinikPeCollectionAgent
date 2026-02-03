@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { LayoutDashboard, ClipboardList, User, Settings } from "lucide-react";
+import { LayoutDashboard, ClipboardList, User, BellDot } from "lucide-react";
 import clsx from "clsx";
 import { useAuthStore } from "../../stores/auth.store";
 
@@ -7,7 +7,7 @@ const tabs = [
   { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { to: "/assignments", label: "Assignments", icon: ClipboardList },
   { to: "/profile", label: "Profile", icon: User },
-  { to: "/settings", label: "Settings", icon: Settings },
+  { to: "/notifications", label: "Notifications", icon: BellDot },
 ];
 
 export default function BottomNav() {

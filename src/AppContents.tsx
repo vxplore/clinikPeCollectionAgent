@@ -16,6 +16,7 @@ import NotFound from "./shared/ui/NotFound";
 import EmptyState from "./shared/ui/EmptyState";
 import { useAuthBootstrap } from "./app/useAuthBootstrap";
 import { PrivateRoute, PublicRoute } from "./app/guards";
+import Notifications from "./pages/Notifications/Notifications";
 
 function AppContents() {
   useAuthBootstrap();
@@ -41,6 +42,7 @@ function AppContents() {
           <Route path="/history" element={<History />} />
           <Route path="/map-view" element={<MapView />} />
           <Route path="/empty-state" element={<EmptyState />} />
+          <Route path="/notifications" element={<Notifications />} />
         </Route>
       </Route>
 

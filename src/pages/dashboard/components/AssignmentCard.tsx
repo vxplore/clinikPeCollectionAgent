@@ -1,11 +1,12 @@
 import { Clock, FlaskConical } from "lucide-react";
 import clsx from "clsx";
 import Badge from "../../../shared/ui/Badge";
+import { useNavigate } from "react-router-dom";
 
 interface AssignmentCardProps {
   name: string;
   id: string;
-  time: string; // e.g. "09:30 AM"
+  time: string;
   completedSamples: number;
   totalSamples: number;
   status: string;
@@ -19,11 +20,20 @@ export default function AssignmentCard({
   totalSamples,
   status,
 }: AssignmentCardProps) {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(`/assignments/${id}`);
+  };
+
   const progress =
     totalSamples === 0 ? 0 : (completedSamples / totalSamples) * 100;
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border p-3 space-y-2">
+    <div
+      className="bg-white rounded-lg shadow-sm border p-3 space-y-2 cursor-pointer"
+      onClick={handleClick}
+    >
       {/* Top row */}
       <div className="flex justify-between items-start">
         <div>

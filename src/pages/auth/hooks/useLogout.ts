@@ -8,9 +8,9 @@ export function useLogout() {
   const mutation = useMutation({
     mutationFn: logoutApi,
     onSettled: () => {
-      // Clear Zustand state and localStorage
+      
       storeLogout();
-      // Redirect to login
+      
       window.location.replace("/login");
     },
   });
