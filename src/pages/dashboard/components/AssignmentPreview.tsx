@@ -8,12 +8,14 @@ interface AssignmentPreviewProps {
   assignments?: AssignmentsResponse["assignments"];
   isLoading?: boolean;
   error?: ApiError | null;
+  history?: boolean;
 }
 
 export default function AssignmentPreview({
   assignments,
   isLoading,
   error,
+  history,
 }: AssignmentPreviewProps) {
   const navigate = useNavigate();
 
@@ -29,11 +31,13 @@ export default function AssignmentPreview({
 
   return (
     <div className="bg-white rounded-lg p-0  space-y-3">
-      <SectionHeader
-        title="Assignments"
-        actionLabel="See All"
-        onActionClick={() => navigate("/assignments")}
-      />
+      {!history && (
+        <SectionHeader
+          title="Assignments"
+          actionLabel="See All"
+          onActionClick={() => navigate("/assignments")}
+        />
+      )}
 
       {isLoading ? (
         <>

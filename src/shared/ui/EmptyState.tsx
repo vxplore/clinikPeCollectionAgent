@@ -20,7 +20,7 @@ const EmptyState = ({
       <img
         src={emptyimg}
         alt="No Data"
-        className={compact ? "w-40" : "w-full h-[80vh] object-contain"}
+        className={compact ? "w-50" : "w-full h-[80vh] object-contain"}
       />
 
       <h3 className="mt-4 text-base font-semibold">

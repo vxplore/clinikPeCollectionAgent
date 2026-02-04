@@ -42,6 +42,8 @@ function AppContents() {
           <Route path="/history" element={<History />} />
           <Route path="/map-view" element={<MapView />} />
           <Route path="/empty-state" element={<EmptyState />} />
+           
+
           <Route path="/notifications" element={<Notifications />} />
         </Route>
       </Route>

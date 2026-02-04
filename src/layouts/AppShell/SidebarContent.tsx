@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Home, ClipboardList, User, LogOut } from "lucide-react";
+import { Home, History, ClipboardList, User, LogOut } from "lucide-react";
 import logo from "../../assets/clinikpe.svg";
 
 interface SidebarContentProps {
@@ -15,14 +15,10 @@ const SidebarContent: React.FC<SidebarContentProps> = ({
   const location = useLocation();
 
   const menuItems = [
-    // { label: "Dashboard", path: "/dashboard", icon: Home },
-    // { label: "Assignments", path: "/assignments", icon: ClipboardList },
-    // { label: "Profile", path: "/profile", icon: User },
     { label: "Dashboard", path: "/dashboard", icon: Home },
     { label: "Assignments", path: "/assignments", icon: ClipboardList },
-    // --- additional realistic items ---
     { label: "Profile", path: "/profile", icon: User },
-    // { label: "Settings", path: "/settings", icon: Settings },
+    { label: "History", path: "/history", icon: History },
   ];
 
   return (
