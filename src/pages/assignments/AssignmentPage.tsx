@@ -91,16 +91,16 @@ const AssignmentPage = () => {
         ) : assignments && assignments.length > 0 ? (
           assignments.map((assignment) => (
             <AssignmentPageCard
-              gender={assignment.for_patient.gender}
+              gender={assignment.for_patient?.gender}
               key={assignment.id}
               id={assignment.id}
-              name={assignment.for_patient.name}
-              age={assignment.for_patient.age}
-              address={assignment.location.address}
-              latitude={assignment.location.lat}
-              longitude={assignment.location.lng}
-              collectedCount={assignment.sample_statistics.collected}
-              totalCount={assignment.sample_statistics.total}
+              name={assignment.for_patient?.name}
+              age={assignment.for_patient?.age}
+              address={assignment.location?.address}
+              latitude={assignment.location?.lat}
+              longitude={assignment.location?.lng}
+              collectedCount={assignment.sample_statistics?.collected}
+              totalCount={assignment.sample_statistics?.total}
               testsCount={assignment.count_test}
               samples={assignment.samples.map((s) => s.name)}
             />
