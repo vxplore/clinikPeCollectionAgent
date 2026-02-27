@@ -10,12 +10,10 @@ export function useAssignmentSample(id: string) {
         queryKey: ["assignments-sample", id],
         queryFn: () => getAssignmentSample(id),
 
-
         retry: false,
         staleTime: 5 * 60 * 1000,
         enabled: !!id,
     });
-    console.log("Assignments query data:", query.data);
     return {
         samples: query.data?.data,
         isLoading: query.isLoading,
@@ -32,7 +30,6 @@ export function useAssignmentTests(id: string, pageNumber: number, pageSize: num
         staleTime: 5 * 60 * 1000,
         enabled: !!id && enabled,
     });
-    console.log("Assignments query data:", query.data);
     return {
         tests: query.data?.data.tests,
         pagination: query.data?.data.pagination,
@@ -51,7 +48,6 @@ export function useAssignmentPayments(id: string, enabled: boolean = true) {
         staleTime: 5 * 60 * 1000,
         enabled: !!id && enabled,
     });
-    console.log("Assignments Payments query data:", query.data);
     return {
         payments: query.data?.data,
         isLoading: query.isLoading,
@@ -68,7 +64,6 @@ export function useAssignmentActivities(id: string, enabled: boolean = true) {
         staleTime: 5 * 60 * 1000,
         enabled: !!id && enabled,
     });
-    console.log("Assignments Activities query data:", query.data);
     return {
         activities: query.data?.data.activities,
         isLoading: query.isLoading,
@@ -91,8 +86,18 @@ export function useMarkSampleCollected(
             markSampleAsCollected(booking_id, sample, assignment_id),
 
         onSuccess: () => {
+            // Invalidate all related queries
             queryClient.invalidateQueries({
                 queryKey: ["assignments-sample", id],
+            });
+            queryClient.invalidateQueries({
+                queryKey: ["assignments-tests", id],
+            });
+            queryClient.invalidateQueries({
+                queryKey: ["assignments-payments", id],
+            });
+            queryClient.invalidateQueries({
+                queryKey: ["assignments-activities", id],
             });
         },
     });

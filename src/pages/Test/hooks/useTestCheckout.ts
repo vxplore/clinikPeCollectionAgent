@@ -49,13 +49,19 @@ export function useTestCheckout({
             onSuccess: (response) => {
                 console.log("Tests added successfully:", response);
 
-                // Invalidate the assignments-tests query to refresh the list
+                // Invalidate all assignment tab queries to refresh data
                 queryClient.invalidateQueries({
                     queryKey: ["assignments-tests", id],
                 });
-                // queryClient.invalidateQueries({
-                //     queryKey: ["assignments-sample", id, "tests"],
-                // });
+                queryClient.invalidateQueries({
+                    queryKey: ["assignments-sample", id],
+                });
+                queryClient.invalidateQueries({
+                    queryKey: ["assignments-payments", id],
+                });
+                queryClient.invalidateQueries({
+                    queryKey: ["assignments-activities", id],
+                });
 
                 onShowSuccess(true);
 

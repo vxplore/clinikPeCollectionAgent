@@ -14,7 +14,7 @@ interface NotificationBellProps {
 }
 
 //mock data - empty for now
-const mockNotification = [];
+const mockNotification: any[] = [];
 
 const NotificationBell: React.FC<NotificationBellProps> = ({
   notifications = [],
