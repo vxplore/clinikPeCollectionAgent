@@ -25,7 +25,7 @@ const MainHeader = ({
         </div>
 
         {/* Right: Notification Bell */}
-        <NotificationBell notificationCount={70} />
+        <NotificationBell />
       </div>
     </div>
   );

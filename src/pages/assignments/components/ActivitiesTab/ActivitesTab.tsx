@@ -22,10 +22,14 @@ const ActivitiesTab = ({
     return <ActivitiesTabSkeleton />;
   }
 
+  const hasActivities = activities && activities.length > 0;
+
   return (
     <div className="relative py-4">
       {/* Timeline line */}
-      <div className="absolute left-[6px] top-0 bottom-0 w-[2px] bg-gray-200" />
+      {hasActivities && (
+        <div className="absolute left-[6px] top-0 bottom-0 w-[2px] bg-gray-200" />
+      )}
 
       {/* Activities */}
       <div className="space-y-4">

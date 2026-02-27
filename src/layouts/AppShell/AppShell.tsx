@@ -6,13 +6,12 @@ import Loader from "../../components/Loader";
 import Error from "../../components/Error";
 import Sidebar from "./Sidebar";
 import { useState } from "react";
-import LogoutConfirmModal from "./LogoutConfirmModal";
+import LogoutConfirmModal from "./DangerModal";
+import LogoutConfirmModalContent from "./LogoutConfirmModalContent";
 import { useLogout } from "../../pages/auth/hooks/useLogout";
 import { FloatingCartOverlay } from "../../pages/Test/components/FloatingCartOverlay";
+import DangerModal from "./DangerModal";
 export default function AppShell() {
-
-
-
   const { logout, isLoading } = useLogout();
 
   const location = useLocation();
@@ -28,7 +27,6 @@ export default function AppShell() {
 
   console.log("Route Meta:", meta);
 
-  
   const [logoutOpen, setLogoutOpen] = useState(false);
 
   const handleLogoutClick = () => {
@@ -39,7 +37,7 @@ export default function AppShell() {
   const handleConfirmLogout = () => {
     logout();
     setLogoutOpen(false);
-  }
+  };
   return (
     <div className="app-frame">
       <Loader />
@@ -55,12 +53,16 @@ export default function AppShell() {
         onClose={() => setSidebarOpen(false)}
         onLogoutClick={handleLogoutClick}
       />
-      <LogoutConfirmModal 
-        isLoading={isLoading}
+      <DangerModal
         opened={logoutOpen}
         onClose={() => setLogoutOpen(false)}
-        onConfirm={handleConfirmLogout}
-      />
+      >
+        <LogoutConfirmModalContent
+          isLoading={isLoading}
+          onConfirm={handleConfirmLogout}
+          onClose={() => setLogoutOpen(false)}
+        />
+      </DangerModal>
       <main
         className={`app-content bg-gray-50/50 px-4 py-3 transition-opacity ${
           sidebarOpen ? "opacity-50 pointer-events-none" : "opacity-100"

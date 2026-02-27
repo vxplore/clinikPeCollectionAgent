@@ -5,18 +5,22 @@ import { type AssignmentSamplesData } from "../../../../apis/modules/assignment/
 
 interface SampleTabProps {
   handleMarkCollected?: (id: string, booking_id: string) => Promise<void>;
+  handleDeleteSample?: (id: string, booking_id: string) => Promise<void>;
   samples?: AssignmentSamplesData;
   isLoading?: boolean;
   error?: Error | null;
   isMarkingCollected?: boolean;
+  isDeletingSample?: boolean;
 }
 
 const SampleTab = ({
   handleMarkCollected = async () => Promise.resolve(),
+  handleDeleteSample,
   samples,
   isLoading = false,
   error = null,
   isMarkingCollected = false,
+  isDeletingSample = false,
 }: SampleTabProps) => {
   // Show skeleton if loading
   if (isLoading) {
@@ -80,6 +84,7 @@ const SampleTab = ({
       {samples.samples.map((sample) => (
         <SampleCard
           handleMarkCollected={handleMarkCollected}
+          handleDeleteSample={handleDeleteSample}
           key={sample.id}
           id={sample.id}
           booking_id={samples.booking_id}
@@ -88,6 +93,7 @@ const SampleTab = ({
           statusText={sample.status === "collected" ? "Collected" : "Pending"}
           note={sample.notes || sample.description || "No notes"}
           isMarkingCollected={isMarkingCollected}
+          isDeletingSample={isDeletingSample}
         />
       ))}
     </div>

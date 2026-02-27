@@ -1,4 +1,5 @@
 // import React from "react";
+import { useEffect } from "react";
 import StatCard from "./components/StatCard";
 import building from "../../assets/building.svg";
 import lab from "../../assets/lab.svg";
@@ -6,16 +7,41 @@ import payment from "../../assets/payments.svg";
 import AppointmentPreview from "./components/AssignmentPreview";
 import { useStatistics } from "./hooks/useDashboard";
 import { useAssignments } from "../assignments/hooks/useAssignment";
+import { useUIStore } from "../../stores/ui.store";
+
+
+
 const DashboardPage = () => {
-  const { statistics, isLoading, error } = useStatistics();
+  const setNotificationCount = useUIStore((state) => state.setNotificationCount);
+
+  const { statistics, notificationCount, isLoading, error } = useStatistics();
+
+  // Sync notification count to global UI store
+  useEffect(() => {
+    setNotificationCount(notificationCount);
+  }, [notificationCount, setNotificationCount]);
+
+
+
+  console.log("Statistics object:", statistics);
+  console.log("Notification count:", notificationCount);
+
+
+
   const {
     assignments,
     isLoading: assignmentsLoading,
     error: assignmentsError,
   } = useAssignments( { pageSize: 3 , pageNumber: 1 } );
   console.log("Assignments:", assignments);
+
+
+
   if (error)
     return <div className="p-4 text-red-600">Error: {error.message}</div>;
+
+
+
 
   //special mock+ dynamic data for stat cards
   const statCardsData = [

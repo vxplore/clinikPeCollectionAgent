@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import leftarrow from "../.././assets/leftarrow.svg";
 import NotificationBell from "./NotificationBell";
 import { useLocation } from "react-router-dom";
+
 interface BackHeaderProps {
   title: string;
   onBack?: () => void;
@@ -11,6 +12,7 @@ interface BackHeaderProps {
 const BackHeader: React.FC<BackHeaderProps> = ({ title, onBack }) => {
   const navigate = useNavigate();
   const location = useLocation();
+
   const handleBack = () => {
     if (onBack) {
       onBack();
@@ -19,9 +21,8 @@ const BackHeader: React.FC<BackHeaderProps> = ({ title, onBack }) => {
     }
   };
 
-  if(location.pathname === '/notifications'){
-  console.log("In notifications page - BackHeader rendered");
-  
+  if (location.pathname === "/notifications") {
+    console.log("In notifications page - BackHeader rendered");
   }
 
   return (
@@ -33,9 +34,7 @@ const BackHeader: React.FC<BackHeaderProps> = ({ title, onBack }) => {
         <h1 className="ml-2 text-xl font-semibold text-gray-900">{title}</h1>
       </div>
 
-      {location.pathname !== '/notifications' && (
-        <NotificationBell notificationCount={58} />
-      )}
+      {location.pathname !== "/notifications" && <NotificationBell />}
     </div>
   );
 };

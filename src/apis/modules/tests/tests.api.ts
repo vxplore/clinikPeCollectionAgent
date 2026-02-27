@@ -22,3 +22,11 @@ export function addOtherTest(id: string, payload: AddTestPayload) {
 
 }
 
+export function deleteTest(id: string, testUid: string  ) {
+    return apiRequest({
+        url: `assignments/${id}/tests/${testUid}`,
+        method: "delete",
+        
+    });
+}
+

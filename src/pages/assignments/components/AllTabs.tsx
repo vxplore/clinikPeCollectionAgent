@@ -85,7 +85,7 @@ const AllTabs = ({
 
       <Tabs.Panel value="Tests" className="pt-2">
         <TestTab
-          tests={tests}
+          tests={tests as any}
           pagination={pagination}
           isLoading={testsLoading}
           error={testsError}

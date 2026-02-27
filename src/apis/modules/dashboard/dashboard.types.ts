@@ -8,6 +8,8 @@ export interface StatisticsResponse {
         today_task: number;
         pending_sample: number;
         due_payment: DuePayment;
+        notification_count: number;
     }
+    
 
 }

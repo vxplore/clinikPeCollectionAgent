@@ -3,12 +3,17 @@ import TestCard from "./TestCard";
 import TestCardSkeleton from "./TestCardSkeleton";
 
 interface Test {
+  description: string;
+  short_about: string;
+  is_deletable: boolean;
+  item_added_by: string;
   uid: string;
   name: string;
   display_name: string;
   slug: string;
   mrp: number;
   price: string;
+  status: string;
   gender: string;
   home_collection_possible: string;
   home_collection_fee: string;
@@ -41,7 +46,7 @@ const TestTab = ({
   error = null,
 }: TestTabProps) => {
   console.log(pagination);
-  
+  console.log("TestTab Props:", tests);
   console.log("======== TestTab Render ========");
   console.log("isLoading:", isLoading);
   console.log("tests:", tests);
@@ -82,7 +87,11 @@ const TestTab = ({
 
   const handleDelete = (uid: string) => {
     console.log("Delete test:", uid);
+    //TODO: Call delete API and handle response
+  //  useDeleteTest(uid);
   };
+
+  console.log("Rendering Test Cards:", tests);
 
   return (
     <div className="space-y-4">
@@ -90,9 +99,12 @@ const TestTab = ({
         <TestCard
           key={test.uid}
           title={test.display_name}
-          description={`₹${test.price} (MRP: ₹${test.mrp})${test.discount_available ? ` - ${test.discount_percentage}% off` : ""}`}
-          status={test.is_assigned ? "Active" : "Completed"}
-          onDelete={() => handleDelete(test.uid)}
+          description={test.description}
+          status={test.status}
+          is_deletable={test.is_deletable}
+          onDelete={
+            test.is_deletable ? () => handleDelete(test.uid) : undefined
+          }
         />
       ))}
     </div>

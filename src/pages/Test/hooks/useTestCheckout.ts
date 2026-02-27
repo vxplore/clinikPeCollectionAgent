@@ -53,6 +53,9 @@ export function useTestCheckout({
                 queryClient.invalidateQueries({
                     queryKey: ["assignments-tests", id],
                 });
+                // queryClient.invalidateQueries({
+                //     queryKey: ["assignments-sample", id, "tests"],
+                // });
 
                 onShowSuccess(true);
 

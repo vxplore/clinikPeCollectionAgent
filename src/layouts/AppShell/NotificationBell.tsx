@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { Popover, Button, Badge } from "@mantine/core";
 import { Bell } from "lucide-react";
 import PopoverNotificationCard from "./PopoverNotificationCard";
+import { useUIStore } from "../../stores/ui.store";
 
 interface NotificationBellProps {
-  notificationCount?: number;
   notifications?: Array<{
     title: string;
     message: string;
@@ -13,6 +13,8 @@ interface NotificationBellProps {
   }>;
 }
 
+
+//mock data
 const mockNotification = [
   {
     title: "Take More Steps!",
@@ -25,14 +27,15 @@ const mockNotification = [
     message: "Take 3150 more steps today.",
     time: "47m",
     progress: 0.72,
-  }
+  },
 ];
 
 const NotificationBell: React.FC<NotificationBellProps> = ({
-  notificationCount = 0,
   notifications = [],
 }) => {
   const [opened, setOpened] = useState(false);
+  const notificationCount = useUIStore((state) => state.notificationCount);
+  console.log("NotificationBell - notificationCount from store:", notificationCount);
 
   return (
     <Popover
@@ -40,7 +43,6 @@ const NotificationBell: React.FC<NotificationBellProps> = ({
       withArrow
       shadow="md"
       opened={opened}
-      
       onChange={setOpened}
     >
       <Popover.Target>

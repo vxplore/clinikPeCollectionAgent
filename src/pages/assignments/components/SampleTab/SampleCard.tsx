@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import Badge from "../../../../shared/ui/Badge";
-import { Ban, AlertCircle } from "lucide-react";
+import { Ban, AlertCircle, Trash } from "lucide-react";
 import { Button } from "@mantine/core";
+import DangerModal from "../../../../layouts/AppShell/DangerModal";
+import { useDeleteSamples } from "../../hooks/useDeleteTest";
 
 interface SampleCardProps {
   title: string;
@@ -11,7 +13,9 @@ interface SampleCardProps {
   id: string;
   booking_id: string;
   handleMarkCollected: (id: string, booking_id: string) => void;
+  handleDeleteSample?: (id: string, booking_id: string) => Promise<void>;
   isMarkingCollected?: boolean;
+  isDeletingSample?: boolean;
 }
 
 const SampleCard: React.FC<SampleCardProps> = ({
@@ -22,10 +26,16 @@ const SampleCard: React.FC<SampleCardProps> = ({
   id,
   booking_id,
   handleMarkCollected,
+  handleDeleteSample,
   isMarkingCollected = false,
+  isDeletingSample = false,
 }) => {
-  // const isLoading = useUIStore((s) => s.isLoading);
-  // const isError = useUIStore((s) => s.error);
+  console.log("booking id in SampleCard:", booking_id);
+  const [deleteModalOpened, setDeleteModalOpened] = useState(false);
+
+  const onConfirmDelete = async () => {
+    // useDeleteSamples(booking_id);
+  };
   const getBadgeColor = (status: string): "green" | "orange" => {
     return status.toLowerCase() === "collected" ? "green" : "orange";
   };
@@ -48,11 +58,11 @@ const SampleCard: React.FC<SampleCardProps> = ({
         </div>
 
         {/* Note box */}
-        <div className="mt-3 rounded-lg bg-blue-50 px-4 py-3">
+        {/* <div className="mt-3 rounded-lg bg-blue-50 px-4 py-3">
           <p className="text-sm text-gray-700">
             <span className="font-semibold">Note:</span> {note}
           </p>
-        </div>
+        </div> */}
       </div>
 
       {/* Action buttons for pending status */}
@@ -68,14 +78,52 @@ const SampleCard: React.FC<SampleCardProps> = ({
           >
             Mark Collected
           </Button>
-          <div className="p-4 bg-gray-100 rounded-xl  hover:bg-gray-200">
-            <Ban size={20} />
-          </div>
-          <div className="p-4 bg-gray-100 rounded-xl hover:bg-gray-200">
-            <AlertCircle color="red" size={20} />
-          </div>
+          <button
+            onClick={() => setDeleteModalOpened(true)}
+            className="p-3.5 bg-red-100 rounded-xl hover:bg-red-200 transition"
+            disabled={isDeletingSample}
+            aria-label="Delete sample"
+          >
+            <Trash className="text-red-600" size={20} />
+          </button>
         </div>
       )}
+
+      <DangerModal
+        opened={deleteModalOpened}
+        onClose={() => setDeleteModalOpened(false)}
+      >
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <h3 className="font-semibold text-center text-gray-900">
+              Delete Sample?
+            </h3>
+            <p className="text-sm text-center text-gray-600">
+              Are you sure you want to delete{" "}
+              <span className="font-semibold">{title}</span>? This action cannot
+              be undone.
+            </p>
+          </div>
+          <div className="flex-col gap-3">
+            <Button
+              color="red"
+              onClick={onConfirmDelete}
+              loading={isDeletingSample}
+              disabled={isDeletingSample}
+              fullWidth
+            >
+              Delete
+            </Button>
+            <Button
+              variant="subtle"
+              onClick={() => setDeleteModalOpened(false)}
+              fullWidth
+            >
+              Cancel
+            </Button>
+          </div>
+        </div>
+      </DangerModal>
     </div>
   );
 };
