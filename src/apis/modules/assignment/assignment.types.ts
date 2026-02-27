@@ -107,7 +107,8 @@ export interface AssignmentSamplesData {
     collected: number;
     pending: number;
   };
-   booking_id: string;
+  booking_id: string;
+  assignment_id: string;
   samples: {
     id: string;
     name: string;
@@ -141,8 +142,8 @@ export interface AssignmentTest {
   organization_id: string;
   center_id: string;
   test_count: string;
-  type:string
-  sub_type:string
+  type: string
+  sub_type: string
   discount_available: boolean;
   discount_percentage: string;
   is_assigned: boolean;
@@ -196,5 +197,5 @@ export interface AssignmentPaymentTypesData {
 
 export interface AssignmentPaymentPayload {
   amount: number
-  mode : string;
+  mode: string;
 }

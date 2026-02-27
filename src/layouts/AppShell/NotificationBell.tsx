@@ -13,29 +13,18 @@ interface NotificationBellProps {
   }>;
 }
 
-
-//mock data
-const mockNotification = [
-  {
-    title: "Take More Steps!",
-    message: "Take 3150 more steps today.",
-    time: "47m",
-    progress: 0.72,
-  },
-  {
-    title: "Take More Steps!",
-    message: "Take 3150 more steps today.",
-    time: "47m",
-    progress: 0.72,
-  },
-];
+//mock data - empty for now
+const mockNotification = [];
 
 const NotificationBell: React.FC<NotificationBellProps> = ({
   notifications = [],
 }) => {
   const [opened, setOpened] = useState(false);
   const notificationCount = useUIStore((state) => state.notificationCount);
-  console.log("NotificationBell - notificationCount from store:", notificationCount);
+  console.log(
+    "NotificationBell - notificationCount from store:",
+    notificationCount,
+  );
 
   return (
     <Popover

@@ -4,6 +4,7 @@ import PaymentStatCard from "./PaymentStatCard";
 import PaymentCardSkeleton from "./PaymentCardSkeleton";
 import PaymentStatCardSkeleton from "./PaymentStatCardSkeleton";
 import { type AssignmentPaymentsData } from "../../../../apis/modules/assignment/assignment.types";
+import EmptyState from "../../../../shared/ui/EmptyState";
 export interface AssignmentPaymentsDataProps {
   payments?: AssignmentPaymentsData;
   isLoading: boolean;
@@ -15,16 +16,28 @@ const PaymentTab = ({
   isLoading,
   error,
 }: AssignmentPaymentsDataProps) => {
-  console.log("PaymentTab props - payments:", payments);
-
   const paymentList = payments?.payments || [];
   const { currency, statistics } = payments || {};
-  console.log("Currency:", currency);
-  console.log("Statistics:", statistics);
-  console.log("PaymentTab props - paymentList:", paymentList);
-  console.log("Payments in PaymentTab:", payments);
   if (error) {
     return <div className="text-red-500">Error: {error.message}</div>;
+  }
+
+  // Check if all payment statistics are 0
+  const allStatsZero =
+    !statistics ||
+    (statistics.total_amount === "0" &&
+      statistics.discount_amount === "0" &&
+      statistics.payable_amount === "0" &&
+      statistics.paid_amount === "0");
+
+  if (!isLoading && allStatsZero) {
+    return (
+      <EmptyState
+        title="No payments available"
+        description="Payment records will appear here"
+        imageSizePercent={50}
+      />
+    );
   }
 
   return (
@@ -55,18 +68,22 @@ const PaymentTab = ({
               },
             ]}
           />
-          <h1 className="text-base font-semibold">Payment History</h1>
-          {paymentList.map((payment, index) => (
-            <PaymentCard
-              key={payment.id || index}
-              amount={payment.amount}
-              method={payment.method}
-              dateTime={payment.paid_at}
-              status={payment.status}
-              note={payment.note}
-              type={payment.type}
-            />
-          ))}
+          {paymentList.length > 0 && (
+            <>
+              <h1 className="text-base font-semibold">Payment History</h1>
+              {paymentList.map((payment, index) => (
+                <PaymentCard
+                  key={payment.id || index}
+                  amount={payment.amount}
+                  method={payment.method}
+                  dateTime={payment.paid_at}
+                  status={payment.status}
+                  note={payment.note}
+                  type={payment.type}
+                />
+              ))}
+            </>
+          )}
         </>
       )}
     </div>

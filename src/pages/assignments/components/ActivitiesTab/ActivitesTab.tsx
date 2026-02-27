@@ -1,6 +1,7 @@
 // import React from 'react';
 import type { AssignmentActivitiesData } from "../../../../apis/modules/assignment/assignment.types";
 import ActivitiesTabSkeleton from "./ActivitiesTabSkeleton";
+import EmptyState from "../../../../shared/ui/EmptyState";
 
 interface ActivitiesTabProps {
   activities?: AssignmentActivitiesData["activities"];
@@ -24,16 +25,24 @@ const ActivitiesTab = ({
 
   const hasActivities = activities && activities.length > 0;
 
+  if (!hasActivities) {
+    return (
+      <EmptyState
+        title="No activities yet"
+        description="Activity logs will appear here"
+        imageSizePercent={50}
+      />
+    );
+  }
+
   return (
     <div className="relative py-4">
       {/* Timeline line */}
-      {hasActivities && (
-        <div className="absolute left-[6px] top-0 bottom-0 w-[2px] bg-gray-200" />
-      )}
+      <div className="absolute left-[6px] top-0 bottom-0 w-[2px] bg-gray-200" />
 
       {/* Activities */}
       <div className="space-y-4">
-        {(activities || []).map((activity) => (
+        {activities.map((activity) => (
           <div key={activity.id} className="relative flex gap-4">
             {/* Timeline dot */}
             <div className="relative z-10 flex-shrink-0">

@@ -54,6 +54,7 @@ const AssignmentTabs = () => {
       "Assignment ID:",
       assignmentId,
     );
+    console.log("Setting markParams with:", { bookingId, sampleId  });
 
     // Just set the params - the hook will be triggered via useEffect
     setMarkParams({ bookingId, sampleId });

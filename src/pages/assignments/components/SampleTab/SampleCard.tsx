@@ -10,7 +10,8 @@ interface SampleCardProps {
   subtitle: string;
   statusText: string;
   note: string;
-  id: string;
+  sample_id: string;
+  assignment_id: string;
   booking_id: string;
   handleMarkCollected: (id: string, booking_id: string) => void;
   handleDeleteSample?: (id: string, booking_id: string) => Promise<void>;
@@ -23,18 +24,25 @@ const SampleCard: React.FC<SampleCardProps> = ({
   subtitle,
   statusText,
   note,
-  id,
+  sample_id,
+  assignment_id,
   booking_id,
   handleMarkCollected,
   handleDeleteSample,
   isMarkingCollected = false,
   isDeletingSample = false,
 }) => {
-  console.log("booking id in SampleCard:", booking_id);
   const [deleteModalOpened, setDeleteModalOpened] = useState(false);
+  const { deleteSamples, isLoading: isDeletingLoading } = useDeleteSamples(
+    assignment_id,
+    sample_id,
+  );
 
   const onConfirmDelete = async () => {
-    // useDeleteSamples(booking_id);
+    console.log(
+      `Confirming delete for Sample ID: ${sample_id}, Assignment ID: ${assignment_id}`,
+    );
+    deleteSamples();
   };
   const getBadgeColor = (status: string): "green" | "orange" => {
     return status.toLowerCase() === "collected" ? "green" : "orange";
@@ -69,7 +77,7 @@ const SampleCard: React.FC<SampleCardProps> = ({
       {isPending && (
         <div className="mt-3 flex gap-3 items-center">
           <Button
-            onClick={() => handleMarkCollected(id, booking_id)}
+            onClick={() => handleMarkCollected(sample_id, booking_id)}
             fullWidth
             color="#09986A"
             size="md"
@@ -78,14 +86,14 @@ const SampleCard: React.FC<SampleCardProps> = ({
           >
             Mark Collected
           </Button>
-          <button
+          {/* <button
             onClick={() => setDeleteModalOpened(true)}
             className="p-3.5 bg-red-100 rounded-xl hover:bg-red-200 transition"
-            disabled={isDeletingSample}
+            disabled={isDeletingLoading}
             aria-label="Delete sample"
           >
             <Trash className="text-red-600" size={20} />
-          </button>
+          </button> */}
         </div>
       )}
 
@@ -108,8 +116,8 @@ const SampleCard: React.FC<SampleCardProps> = ({
             <Button
               color="red"
               onClick={onConfirmDelete}
-              loading={isDeletingSample}
-              disabled={isDeletingSample}
+              loading={isDeletingLoading}
+              disabled={isDeletingLoading}
               fullWidth
             >
               Delete

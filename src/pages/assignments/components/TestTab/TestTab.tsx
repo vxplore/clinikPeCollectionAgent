@@ -1,7 +1,9 @@
 // import React from 'react'
 import TestCard from "./TestCard";
 import TestCardSkeleton from "./TestCardSkeleton";
-
+import { useParams } from "react-router-dom";
+import { useDeleteTest } from "../../hooks/useDeleteTest";
+import EmptyState from "../../../../shared/ui/EmptyState";
 interface Test {
   description: string;
   short_about: string;
@@ -45,6 +47,11 @@ const TestTab = ({
   isLoading = false,
   error = null,
 }: TestTabProps) => {
+  const { id } = useParams();
+  const { deleteTest, isLoading: isDeleting } = useDeleteTest(id || "");
+
+  console.log("Rendering TestTab with assignment ID:", id);
+
   console.log(pagination);
   console.log("TestTab Props:", tests);
   console.log("======== TestTab Render ========");
@@ -79,16 +86,19 @@ const TestTab = ({
   if (!tests || tests.length === 0) {
     console.log("⚠️ No tests available");
     return (
-      <div className="text-center py-8 text-gray-500">No tests available</div>
+      <EmptyState
+        title="No tests assigned"
+        description="Tests will appear here once assigned"
+        imageSizePercent={50}
+      />
     );
   }
 
   console.log("✅ Showing test cards - data loaded");
 
   const handleDelete = (uid: string) => {
-    console.log("Delete test:", uid);
-    //TODO: Call delete API and handle response
-  //  useDeleteTest(uid);
+    console.log("Deleting test:", uid);
+    deleteTest(uid);
   };
 
   console.log("Rendering Test Cards:", tests);

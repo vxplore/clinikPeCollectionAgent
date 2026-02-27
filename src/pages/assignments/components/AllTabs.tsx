@@ -27,6 +27,10 @@ const AllTabs = ({
   console.log("Assignment ID in AllTabs:", id);
   //sample tab data
   const { samples, isLoading, error } = useAssignmentSample(id!);
+
+
+
+  
   //tests tab data
   const {
     tests,
@@ -34,12 +38,19 @@ const AllTabs = ({
     isLoading: testsLoading,
     error: testsError,
   } = useAssignmentTests(id!, 1, 100, activeTab === "Tests");
+
+  console.log("Tests data in AllTabs:", tests);
+
+
   //payments tab data
   const {
     payments,
     isLoading: paymentsLoading,
     error: paymentsError,
   } = useAssignmentPayments(id!, activeTab === "Payments");
+
+
+
   //activities tab data
   const {
     activities: activitiesData,

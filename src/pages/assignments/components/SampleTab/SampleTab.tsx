@@ -2,6 +2,7 @@ import SampleStatCard from "./SampleStatCard";
 import SampleCard from "./SampleCard";
 import SampleTabSkeleton from "./SampleTabSkeleton";
 import { type AssignmentSamplesData } from "../../../../apis/modules/assignment/assignment.types";
+import EmptyState from "../../../../shared/ui/EmptyState";
 
 interface SampleTabProps {
   handleMarkCollected?: (id: string, booking_id: string) => Promise<void>;
@@ -22,6 +23,7 @@ const SampleTab = ({
   isMarkingCollected = false,
   isDeletingSample = false,
 }: SampleTabProps) => {
+  console.log("Rendering SampleTab with samples:", samples?.booking_id);
   // Show skeleton if loading
   if (isLoading) {
     return <SampleTabSkeleton />;
@@ -37,9 +39,13 @@ const SampleTab = ({
   }
 
   // Show empty state if no data
-  if (!samples) {
+  if (!samples || samples.sample_statistics.total === 0) {
     return (
-      <div className="text-center py-8 text-gray-500">No samples available</div>
+      <EmptyState
+        title="No samples available"
+        description="Samples will appear here once added"
+        imageSizePercent={50}
+      />
     );
   }
 
@@ -80,13 +86,14 @@ const SampleTab = ({
 
   return (
     <div className="space-y-4">
-      <SampleStatCard stats={stats} />
+      {samples.sample_statistics.total > 0 && <SampleStatCard stats={stats} />}
       {samples.samples.map((sample) => (
         <SampleCard
           handleMarkCollected={handleMarkCollected}
           handleDeleteSample={handleDeleteSample}
           key={sample.id}
-          id={sample.id}
+          sample_id={sample.id}
+          assignment_id={samples.assignment_id}
           booking_id={samples.booking_id}
           title={`Sample - ${sample.id}`}
           subtitle={sample.name}
