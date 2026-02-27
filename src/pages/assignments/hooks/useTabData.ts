@@ -88,6 +88,12 @@ export function useMarkSampleCollected(
         onSuccess: () => {
             // Invalidate all related queries
             queryClient.invalidateQueries({
+                queryKey: ["statistics"],
+            });
+            queryClient.invalidateQueries({
+                queryKey: ["assignments"],
+            });
+            queryClient.invalidateQueries({
                 queryKey: ["assignments-sample", id],
             });
             queryClient.invalidateQueries({

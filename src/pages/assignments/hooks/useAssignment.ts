@@ -6,7 +6,7 @@ export function useAssignments(filters?: AssignmentFilters) {
     const query = useQuery({
         queryKey: ["assignments", filters],
         queryFn: () => getAssignments(filters),
-
+        
 
         retry: false,
         staleTime: 5 * 60 * 1000,
