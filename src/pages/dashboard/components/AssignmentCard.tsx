@@ -1,4 +1,4 @@
-import { Clock, FlaskConical } from "lucide-react";
+import { Clock, FlaskConical, Phone } from "lucide-react";
 import clsx from "clsx";
 import Badge from "../../../shared/ui/Badge";
 import { useNavigate } from "react-router-dom";
@@ -29,6 +29,11 @@ export default function AssignmentCard({
   const progress =
     totalSamples === 0 ? 0 : (completedSamples / totalSamples) * 100;
 
+  const handleCall = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+    console.log(`Initiating call for assignment ${id}`);
+  };
+
   return (
     <div
       className="bg-white rounded-lg shadow-sm border p-3 space-y-2 cursor-pointer"
@@ -41,13 +46,21 @@ export default function AssignmentCard({
           <p className="text-xs text-[#828A94]">ID: {id}</p>
         </div>
 
-        <Badge
-          color={status === "pending" ? "orange" : "green"}
-          variant="light"
-          size="xs"
-        >
-          {status === "pending" ? "Pending" : "Completed"}
-        </Badge>
+        <div className="flex items-center gap-2">
+          <Badge
+            color={status === "pending" ? "orange" : "green"}
+            variant="light"
+            size="xs"
+          >
+            {status === "pending" ? "Pending" : "Completed"}
+          </Badge>
+          <div
+            onClick={handleCall}
+            className="bg-primary p-2 hover:opacity-80 rounded-full transition-opacity cursor-pointer"
+          >
+            <Phone size={16} className="text-white" />
+          </div>
+        </div>
       </div>
 
       {/* Meta row */}
