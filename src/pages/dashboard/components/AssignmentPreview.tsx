@@ -17,6 +17,7 @@ export default function AssignmentPreview({
   error,
   history,
 }: AssignmentPreviewProps) {
+  console.log("Assignments:", assignments);
   const navigate = useNavigate();
 
   if (error) {
@@ -48,6 +49,7 @@ export default function AssignmentPreview({
       ) : assignments && assignments.length > 0 ? (
         assignments.map((assignment) => (
           <AssignmentCard
+          bookingId={assignment.booking_id}
             key={assignment.id}
             name={assignment.for_patient.name}
             id={assignment.id}

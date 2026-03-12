@@ -1,7 +1,11 @@
-import { Clock, FlaskConical, Phone } from "lucide-react";
+import { Clock, FlaskConical, Phone, Loader2 } from "lucide-react";
 import clsx from "clsx";
 import Badge from "../../../shared/ui/Badge";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { getMaskingNumber } from "../../../apis/modules/dashboard/dashboard.api";
+import DangerModal from "../../../layouts/AppShell/DangerModal";
+import MaskingNumberModal from "./MaskingNumberModal";
 
 interface AssignmentCardProps {
   name: string;
@@ -10,6 +14,7 @@ interface AssignmentCardProps {
   completedSamples: number;
   totalSamples: number;
   status: string;
+  bookingId: string;
 }
 
 export default function AssignmentCard({
@@ -19,24 +24,49 @@ export default function AssignmentCard({
   completedSamples,
   totalSamples,
   status,
+  bookingId,
 }: AssignmentCardProps) {
   const navigate = useNavigate();
 
+  const [isCalling, setIsCalling] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [maskingNumber, setMaskingNumber] = useState<string | null>(null);
+
   const handleClick = () => {
+    // Best Practice: Prevent navigation if a modal is active
+    if (isModalOpen) return;
     navigate(`/assignments/${id}`);
   };
 
   const progress =
     totalSamples === 0 ? 0 : (completedSamples / totalSamples) * 100;
 
-  const handleCall = (e: React.MouseEvent<HTMLDivElement>) => {
-    e.stopPropagation();
-    console.log(`Initiating call for assignment ${id}`);
+  const handleCall = async (e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation(); // Stops the card click from firing when clicking the button
+
+    if (isCalling) return;
+
+    setIsCalling(true);
+    try {
+      const response = await getMaskingNumber(bookingId);
+      const number = response?.data?.virtual_number;
+
+      if (number) {
+        setMaskingNumber(number);
+        setIsModalOpen(true);
+      } else {
+        console.error("No masking number found");
+      }
+    } catch (error) {
+      console.error("Error fetching masking number:", error);
+    } finally {
+      setIsCalling(false);
+    }
   };
 
   return (
     <div
-      className="bg-white rounded-lg shadow-sm border p-3 space-y-2 cursor-pointer"
+      className="bg-white rounded-lg shadow-sm border p-3 space-y-2 cursor-pointer hover:border-primary/30 transition-colors"
       onClick={handleClick}
     >
       {/* Top row */}
@@ -54,11 +84,21 @@ export default function AssignmentCard({
           >
             {status === "pending" ? "Pending" : "Completed"}
           </Badge>
+
           <div
             onClick={handleCall}
-            className="bg-primary p-2 hover:opacity-80 rounded-full transition-opacity cursor-pointer"
+            className={clsx(
+              "p-2 rounded-full transition-all flex items-center justify-center min-w-[32px] min-h-[32px]",
+              isCalling
+                ? "bg-gray-100 cursor-wait"
+                : "bg-primary hover:bg-primary/90 cursor-pointer active:scale-95",
+            )}
           >
-            <Phone size={16} className="text-white" />
+            {isCalling ? (
+              <Loader2 size={16} className="text-primary animate-spin" />
+            ) : (
+              <Phone size={16} className="text-white" />
+            )}
           </div>
         </div>
       </div>
@@ -83,10 +123,29 @@ export default function AssignmentCard({
         <div
           className={clsx(
             "h-full rounded-full transition-all duration-500",
-            progress === 100 ? "bg-primary" : "bg-muted",
+            progress === 100 ? "bg-primary" : "bg-primary/40",
           )}
           style={{ width: `${progress}%` }}
         />
+      </div>
+
+      {/* ROOT CAUSE FIX: 
+          Wrapping the modal in a div that stops propagation. 
+          This prevents clicks inside the modal from bubbling up to the Card's onClick.
+      */}
+      <div onClick={(e) => e.stopPropagation()}>
+        <DangerModal
+          opened={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+        >
+          {maskingNumber && (
+            <MaskingNumberModal
+              number={maskingNumber}
+              isLoading={isCalling}
+              onClose={() => setIsModalOpen(false)}
+            />
+          )}
+        </DangerModal>
       </div>
     </div>
   );

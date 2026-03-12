@@ -13,3 +13,7 @@ export interface StatisticsResponse {
     
 
 }
+
+export interface MaskingNumberResponse {
+    virtual_number: string;
+}
