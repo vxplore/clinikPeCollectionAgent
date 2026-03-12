@@ -1,6 +1,7 @@
 import { Button, Text, Stack, CopyButton } from "@mantine/core";
 import { AnimatePresence, motion } from "framer-motion";
 import { Check, Copy } from "lucide-react";
+import { notify } from "../../../app/notifications";
 
 interface MaskingNumberModalProps {
   number: string;
@@ -40,7 +41,10 @@ function MaskingNumberModal({
               color={copied ? "green" : "black"}
               fullWidth
               radius="md"
-              onClick={copy}
+              onClick={() => {
+                copy();
+                notify.success("Number copied to clipboard");
+              }}
               loading={isLoading}
               // Set a fixed height or min-width to prevent the button
               // from "breathing" during the transition
